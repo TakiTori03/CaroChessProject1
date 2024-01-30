@@ -63,6 +63,16 @@ namespace CaroChessProject1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap aiComputer {
+            get {
+                object obj = ResourceManager.GetObject("aiComputer", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap caro {
             get {
                 object obj = ResourceManager.GetObject("caro", resourceCulture);
@@ -73,9 +83,19 @@ namespace CaroChessProject1.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap pctbCaroChess {
+        internal static System.Drawing.Bitmap human {
             get {
-                object obj = ResourceManager.GetObject("pctbCaroChess", resourceCulture);
+                object obj = ResourceManager.GetObject("human", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap human1 {
+            get {
+                object obj = ResourceManager.GetObject("human1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

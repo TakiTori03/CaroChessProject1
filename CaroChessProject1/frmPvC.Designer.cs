@@ -41,14 +41,10 @@
             pictureBox2 = new PictureBox();
             pictureBox3 = new PictureBox();
             btnOK = new Button();
-            pictureBox4 = new PictureBox();
-            pictureBox5 = new PictureBox();
             errNull = new ErrorProvider(components);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
             ((System.ComponentModel.ISupportInitialize)errNull).BeginInit();
             SuspendLayout();
             // 
@@ -161,22 +157,6 @@
             btnOK.UseVisualStyleBackColor = true;
             btnOK.Click += btnOK_Click;
             // 
-            // pictureBox4
-            // 
-            pictureBox4.Location = new Point(51, 166);
-            pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(84, 53);
-            pictureBox4.TabIndex = 11;
-            pictureBox4.TabStop = false;
-            // 
-            // pictureBox5
-            // 
-            pictureBox5.Location = new Point(441, 166);
-            pictureBox5.Name = "pictureBox5";
-            pictureBox5.Size = new Size(84, 53);
-            pictureBox5.TabIndex = 12;
-            pictureBox5.TabStop = false;
-            // 
             // errNull
             // 
             errNull.ContainerControl = this;
@@ -185,10 +165,9 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.HighlightText;
             ClientSize = new Size(584, 241);
             ControlBox = false;
-            Controls.Add(pictureBox5);
-            Controls.Add(pictureBox4);
             Controls.Add(btnOK);
             Controls.Add(pictureBox3);
             Controls.Add(pictureBox2);
@@ -200,7 +179,7 @@
             Controls.Add(lbl2);
             Controls.Add(lbl1);
             Controls.Add(lblPlayervsCom);
-            FormBorderStyle = FormBorderStyle.None;
+            FormBorderStyle = FormBorderStyle.Fixed3D;
             Name = "frmPvC";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "PvC";
@@ -208,8 +187,6 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
             ((System.ComponentModel.ISupportInitialize)errNull).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -228,8 +205,6 @@
         private PictureBox pictureBox2;
         private PictureBox pictureBox3;
         private Button btnOK;
-        private PictureBox pictureBox4;
-        private PictureBox pictureBox5;
         private ErrorProvider errNull;
     }
 }

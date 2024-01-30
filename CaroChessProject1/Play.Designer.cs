@@ -35,11 +35,18 @@
             newToolStripMenuItem = new ToolStripMenuItem();
             playervsPlayerToolStripMenuItem = new ToolStripMenuItem();
             playervsComToolStripMenuItem = new ToolStripMenuItem();
+            quitToolStripMenuItem = new ToolStripMenuItem();
+            openToolStripMenuItem = new ToolStripMenuItem();
+            saveToolStripMenuItem = new ToolStripMenuItem();
             editToolStripMenuItem = new ToolStripMenuItem();
             undoToolStripMenuItem = new ToolStripMenuItem();
             redoToolStripMenuItem = new ToolStripMenuItem();
             settingToolStripMenuItem = new ToolStripMenuItem();
-            pictureBox1 = new PictureBox();
+            languageToolStripMenuItem = new ToolStripMenuItem();
+            englishToolStripMenuItem = new ToolStripMenuItem();
+            tiếngViệtToolStripMenuItem = new ToolStripMenuItem();
+            helpToolStripMenuItem = new ToolStripMenuItem();
+            aboutToolStripMenuItem = new ToolStripMenuItem();
             gpbLaws = new GroupBox();
             lblLaws = new Label();
             lblPlayerNameAndMark = new Label();
@@ -56,10 +63,9 @@
             pnlChessBoard = new Panel();
             tmCoolDown = new System.Windows.Forms.Timer(components);
             pictureBox2 = new PictureBox();
-            btnRefresh = new Button();
+            btnNewGame = new Button();
             lblScore = new Label();
             menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             gpbLaws.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pctbMark).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -76,7 +82,7 @@
             // 
             // fileToolStripMenuItem
             // 
-            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { newToolStripMenuItem });
+            fileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { newToolStripMenuItem, quitToolStripMenuItem, openToolStripMenuItem, saveToolStripMenuItem });
             fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             fileToolStripMenuItem.Size = new Size(37, 20);
             fileToolStripMenuItem.Text = "&File";
@@ -85,7 +91,7 @@
             // 
             newToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { playervsPlayerToolStripMenuItem, playervsComToolStripMenuItem });
             newToolStripMenuItem.Name = "newToolStripMenuItem";
-            newToolStripMenuItem.Size = new Size(98, 22);
+            newToolStripMenuItem.Size = new Size(103, 22);
             newToolStripMenuItem.Text = "&New";
             // 
             // playervsPlayerToolStripMenuItem
@@ -102,6 +108,25 @@
             playervsComToolStripMenuItem.Text = "PlayervsCom";
             playervsComToolStripMenuItem.Click += playervsComToolStripMenuItem_Click;
             // 
+            // quitToolStripMenuItem
+            // 
+            quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+            quitToolStripMenuItem.Size = new Size(103, 22);
+            quitToolStripMenuItem.Text = "&Quit";
+            quitToolStripMenuItem.Click += quitToolStripMenuItem_Click;
+            // 
+            // openToolStripMenuItem
+            // 
+            openToolStripMenuItem.Name = "openToolStripMenuItem";
+            openToolStripMenuItem.Size = new Size(103, 22);
+            openToolStripMenuItem.Text = "&Open";
+            // 
+            // saveToolStripMenuItem
+            // 
+            saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            saveToolStripMenuItem.Size = new Size(103, 22);
+            saveToolStripMenuItem.Text = "&Save";
+            // 
             // editToolStripMenuItem
             // 
             editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { undoToolStripMenuItem, redoToolStripMenuItem });
@@ -111,6 +136,7 @@
             // 
             // undoToolStripMenuItem
             // 
+            undoToolStripMenuItem.Enabled = false;
             undoToolStripMenuItem.Name = "undoToolStripMenuItem";
             undoToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+Z";
             undoToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Z;
@@ -120,6 +146,7 @@
             // 
             // redoToolStripMenuItem
             // 
+            redoToolStripMenuItem.Enabled = false;
             redoToolStripMenuItem.Name = "redoToolStripMenuItem";
             redoToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+Y";
             redoToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Y;
@@ -129,22 +156,49 @@
             // 
             // settingToolStripMenuItem
             // 
+            settingToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { languageToolStripMenuItem, helpToolStripMenuItem, aboutToolStripMenuItem });
             settingToolStripMenuItem.Name = "settingToolStripMenuItem";
             settingToolStripMenuItem.Size = new Size(56, 20);
             settingToolStripMenuItem.Text = "&Setting";
             // 
-            // pictureBox1
+            // languageToolStripMenuItem
             // 
-            pictureBox1.Image = Properties.Resources.pctbCaroChess;
-            pictureBox1.Location = new Point(219, 12);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(880, 151);
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox1.TabIndex = 1;
-            pictureBox1.TabStop = false;
+            languageToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { englishToolStripMenuItem, tiếngViệtToolStripMenuItem });
+            languageToolStripMenuItem.Name = "languageToolStripMenuItem";
+            languageToolStripMenuItem.Size = new Size(180, 22);
+            languageToolStripMenuItem.Text = "&Language";
+            // 
+            // englishToolStripMenuItem
+            // 
+            englishToolStripMenuItem.Name = "englishToolStripMenuItem";
+            englishToolStripMenuItem.Size = new Size(180, 22);
+            englishToolStripMenuItem.Text = "English";
+            englishToolStripMenuItem.Click += englishToolStripMenuItem_Click;
+            // 
+            // tiếngViệtToolStripMenuItem
+            // 
+            tiếngViệtToolStripMenuItem.Name = "tiếngViệtToolStripMenuItem";
+            tiếngViệtToolStripMenuItem.Size = new Size(180, 22);
+            tiếngViệtToolStripMenuItem.Text = "Tiếng Việt";
+            tiếngViệtToolStripMenuItem.Click += tiếngViệtToolStripMenuItem_Click;
+            // 
+            // helpToolStripMenuItem
+            // 
+            helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            helpToolStripMenuItem.Size = new Size(180, 22);
+            helpToolStripMenuItem.Text = "Help";
+            helpToolStripMenuItem.Click += helpToolStripMenuItem_Click;
+            // 
+            // aboutToolStripMenuItem
+            // 
+            aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            aboutToolStripMenuItem.Size = new Size(180, 22);
+            aboutToolStripMenuItem.Text = "About";
+            aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
             // 
             // gpbLaws
             // 
+            gpbLaws.BackColor = SystemColors.Window;
             gpbLaws.Controls.Add(lblLaws);
             gpbLaws.Location = new Point(7, 165);
             gpbLaws.Name = "gpbLaws";
@@ -195,6 +249,7 @@
             // 
             // pctbMark
             // 
+            pctbMark.BorderStyle = BorderStyle.Fixed3D;
             pctbMark.Location = new Point(137, 401);
             pctbMark.Name = "pctbMark";
             pctbMark.Size = new Size(73, 65);
@@ -278,11 +333,13 @@
             // 
             // pnlChessBoard
             // 
+            pnlChessBoard.BackColor = SystemColors.Window;
             pnlChessBoard.BackgroundImageLayout = ImageLayout.Stretch;
+            pnlChessBoard.BorderStyle = BorderStyle.FixedSingle;
             pnlChessBoard.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pnlChessBoard.Location = new Point(225, 169);
+            pnlChessBoard.Location = new Point(225, 21);
             pnlChessBoard.Name = "pnlChessBoard";
-            pnlChessBoard.Size = new Size(865, 540);
+            pnlChessBoard.Size = new Size(865, 688);
             pnlChessBoard.TabIndex = 14;
             // 
             // tmCoolDown
@@ -291,6 +348,7 @@
             // 
             // pictureBox2
             // 
+            pictureBox2.BorderStyle = BorderStyle.Fixed3D;
             pictureBox2.Image = Properties.Resources.caro;
             pictureBox2.Location = new Point(3, 21);
             pictureBox2.Name = "pictureBox2";
@@ -299,26 +357,27 @@
             pictureBox2.TabIndex = 15;
             pictureBox2.TabStop = false;
             // 
-            // btnRefresh
+            // btnNewGame
             // 
-            btnRefresh.BackColor = SystemColors.ButtonHighlight;
-            btnRefresh.Enabled = false;
-            btnRefresh.Font = new Font("Arial Black", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnRefresh.Location = new Point(7, 553);
-            btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(203, 36);
-            btnRefresh.TabIndex = 16;
-            btnRefresh.Text = "Refresh";
-            btnRefresh.UseVisualStyleBackColor = false;
-            btnRefresh.Click += btnRefresh_Click;
+            btnNewGame.BackColor = SystemColors.ButtonHighlight;
+            btnNewGame.Enabled = false;
+            btnNewGame.Font = new Font("Arial Black", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnNewGame.Location = new Point(7, 553);
+            btnNewGame.Name = "btnNewGame";
+            btnNewGame.Size = new Size(203, 36);
+            btnNewGame.TabIndex = 16;
+            btnNewGame.Text = "NewGame";
+            btnNewGame.UseVisualStyleBackColor = false;
+            btnNewGame.Click += btnNewGame_Click;
             // 
             // lblScore
             // 
             lblScore.AutoSize = true;
+            lblScore.BorderStyle = BorderStyle.Fixed3D;
             lblScore.Font = new Font("Arial Black", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblScore.Location = new Point(10, 330);
             lblScore.Name = "lblScore";
-            lblScore.Size = new Size(54, 18);
+            lblScore.Size = new Size(56, 20);
             lblScore.TabIndex = 17;
             lblScore.Text = "Score ";
             // 
@@ -326,9 +385,11 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.Window;
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1111, 720);
             Controls.Add(lblScore);
-            Controls.Add(btnRefresh);
+            Controls.Add(btnNewGame);
             Controls.Add(pictureBox2);
             Controls.Add(pnlChessBoard);
             Controls.Add(btnQuit);
@@ -343,7 +404,6 @@
             Controls.Add(txbPlayerName);
             Controls.Add(lblPlayerNameAndMark);
             Controls.Add(gpbLaws);
-            Controls.Add(pictureBox1);
             Controls.Add(menuStrip1);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -355,7 +415,6 @@
             Load += frmPlay_Load;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             gpbLaws.ResumeLayout(false);
             gpbLaws.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pctbMark).EndInit();
@@ -372,7 +431,6 @@
         private ToolStripMenuItem editToolStripMenuItem;
         private ToolStripMenuItem undoToolStripMenuItem;
         private ToolStripMenuItem redoToolStripMenuItem;
-        private PictureBox pictureBox1;
         private GroupBox gpbLaws;
         private Label lblPlayerNameAndMark;
         private TextBox txbPlayerName;
@@ -389,10 +447,18 @@
         private System.Windows.Forms.Timer tmCoolDown;
         private Label lblLaws;
         private PictureBox pictureBox2;
-        private Button btnRefresh;
+        private Button btnNewGame;
         private ToolStripMenuItem playervsPlayerToolStripMenuItem;
         private ToolStripMenuItem playervsComToolStripMenuItem;
         private Label lblScore;
         private ToolStripMenuItem settingToolStripMenuItem;
+        private ToolStripMenuItem quitToolStripMenuItem;
+        private ToolStripMenuItem openToolStripMenuItem;
+        private ToolStripMenuItem saveToolStripMenuItem;
+        private ToolStripMenuItem languageToolStripMenuItem;
+        private ToolStripMenuItem englishToolStripMenuItem;
+        private ToolStripMenuItem tiếngViệtToolStripMenuItem;
+        private ToolStripMenuItem helpToolStripMenuItem;
+        private ToolStripMenuItem aboutToolStripMenuItem;
     }
 }

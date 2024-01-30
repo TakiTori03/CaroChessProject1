@@ -149,18 +149,22 @@
             // 
             // pictureBox3
             // 
+            pictureBox3.BorderStyle = BorderStyle.Fixed3D;
+            pictureBox3.Image = Properties.Resources.human;
             pictureBox3.Location = new Point(54, 168);
             pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(100, 61);
+            pictureBox3.Size = new Size(94, 61);
             pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox3.TabIndex = 10;
             pictureBox3.TabStop = false;
             // 
             // pictureBox4
             // 
-            pictureBox4.Location = new Point(422, 168);
+            pictureBox4.BorderStyle = BorderStyle.Fixed3D;
+            pictureBox4.Image = Properties.Resources.human1;
+            pictureBox4.Location = new Point(428, 168);
             pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(100, 61);
+            pictureBox4.Size = new Size(94, 61);
             pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox4.TabIndex = 11;
             pictureBox4.TabStop = false;
@@ -173,6 +177,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.HighlightText;
             ClientSize = new Size(584, 241);
             ControlBox = false;
             Controls.Add(pictureBox4);
@@ -187,7 +192,7 @@
             Controls.Add(label1);
             Controls.Add(lbl1);
             Controls.Add(lblPlayervsPlayer);
-            FormBorderStyle = FormBorderStyle.None;
+            FormBorderStyle = FormBorderStyle.Fixed3D;
             Name = "frmPvP";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "PvP";

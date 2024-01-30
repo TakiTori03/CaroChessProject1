@@ -1,8 +1,9 @@
-using Microsoft.VisualBasic.ApplicationServices;
+﻿using Microsoft.VisualBasic.ApplicationServices;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static System.Windows.Forms.LinkLabel;
 using String = System.String;
 using System.Media;
+using Microsoft.VisualBasic.Devices;
 
 namespace CaroChessProject1
 {
@@ -11,6 +12,8 @@ namespace CaroChessProject1
         bool PvsP;
         bool PvsC;
         int CheDo;
+        bool VietNam = false;
+        bool English = true;
 
         private StreamReader FR;
 
@@ -23,8 +26,6 @@ namespace CaroChessProject1
         frmPvP P1vsP2 = null;
         frmPvC PvsCOM = null;
 
-        //music
-        bool isOnMusic;
 
         private List<Player> player;
         public List<Player> Player { get => player; set => player = value; }
@@ -56,7 +57,7 @@ namespace CaroChessProject1
 
         private void frmPlay_Load(object sender, EventArgs e)
         {
-            lblLaws.Text = "-Each player fills in each box on the \nboard.\n- The player who fills in at least 5 \nconsecutive chess pieces in the \nsame row, column or \ndiagonal without being blocked by \nthe opponent at both ends will win. \n-If two players fill in all the boxes on\nthe board and still don't win, the\n twoplayers will draw.";
+            lblLaws.Text = "- Both sides take turns playing each\non the board. \n- Which ever side reaches >= 5 on 1 \nhorizontally, vertically or diagonally \nwithout blocking both ends first \nwins.\n- If all the boxes on the board are \n played and there is still no winner,\n it will be considered a draw.";
         }
 
         private void frmPlay_FormClosing(object sender, FormClosingEventArgs e)
@@ -131,6 +132,12 @@ namespace CaroChessProject1
 
             }
 
+            if (PvsC == true && Current == 1 && pnlChessBoard.Enabled == true)
+            {
+                Current = Current == 1 ? 0 : 1;
+                changePlayer();
+                StartComputer(btn);
+            }
         }
 
         private void Sound()
@@ -148,21 +155,46 @@ namespace CaroChessProject1
                 prgbCoolDown.Value = 0;
                 return false;
             }
-            prgbCoolDown.Value = 0;
-            Point point = Comeback.Peek();
 
-            Advance.Push(point);
+            if (PvsC == true && Comeback.Count > 1)
+            {
+                prgbCoolDown.Value = 0;
+                tmCoolDown.Start();
 
-            Point oldpoint = Comeback.Pop();
+                Point pointcom = Comeback.Pop();
 
-            Button btn = Matrix[oldpoint.Y][oldpoint.X];
+                Button com = Matrix[pointcom.Y][pointcom.X];
+                com.BackgroundImage = null;
 
-            btn.BackgroundImage = null;
+                Point pointP = Comeback.Peek();
 
-            Current = Current == 1 ? 0 : 1;
-            changePlayer();
+                Advance.Push(pointP);
 
-            return true;
+                Point point = Comeback.Pop();
+                Button btnC = Matrix[point.Y][point.X];
+                btnC.BackgroundImage = null;
+                changePlayer();
+                return true;
+
+            }
+            else
+            {
+                prgbCoolDown.Value = 0;
+                Point point = Comeback.Peek();
+
+                Advance.Push(point);
+
+                Point oldpoint = Comeback.Pop();
+
+                Button btn = Matrix[oldpoint.Y][oldpoint.X];
+
+                btn.BackgroundImage = null;
+
+                Current = Current == 1 ? 0 : 1;
+                changePlayer();
+
+                return true;
+            }
 
         }
         public bool Redo()
@@ -175,20 +207,38 @@ namespace CaroChessProject1
             }
 
             prgbCoolDown.Value = 0;
-            Point point = Advance.Peek();
 
-            Comeback.Push(point);
+            if (PvsC == true && Current == 0)
+            {
+                Point point = Advance.Peek();
 
-            Point oldpoint = Advance.Pop();
-            Button btn = Matrix[oldpoint.Y][oldpoint.X];
+                Comeback.Push(point);
 
-            btn.BackgroundImage = Player[Current].Mark;
+                Point oldpoint = Advance.Pop();
+                Button btn = Matrix[oldpoint.Y][oldpoint.X];
 
-            Current = Current == 1 ? 0 : 1;
+                btn.BackgroundImage = Player[Current].Mark;
+                StartComputer(btn);
+                changePlayer();
+                return true;
+            }
+            else
+            {
+                Point point = Advance.Peek();
 
-            changePlayer();
+                Comeback.Push(point);
 
-            return true;
+                Point oldpoint = Advance.Pop();
+                Button btn = Matrix[oldpoint.Y][oldpoint.X];
+
+                btn.BackgroundImage = Player[Current].Mark;
+
+                Current = Current == 1 ? 0 : 1;
+                changePlayer();
+
+                return true;
+
+            }
 
         }
         private void btnStart_Click(object sender, EventArgs e)
@@ -197,7 +247,7 @@ namespace CaroChessProject1
 
             pnlChessBoard.Enabled = true;
             btnStart.Enabled = false;
-            btnRefresh.Enabled = true;
+            btnNewGame.Enabled = true;
             btnPlayervsPlayer.Enabled = true;
             btnPlayervsComputer.Enabled = true;
             btnUndo.Enabled = true;
@@ -211,22 +261,22 @@ namespace CaroChessProject1
                 lblScore.Text = "Score " + P1 + " " + score1 + " : " + score2 + " " + "Computer";
                 PlayervsCom(P1);
             }
-                
+
             else if (P1 != "" && P2 != "")
             {
                 lblScore.Text = "Score " + P1 + " " + score1 + " : " + score2 + " " + P2;
                 PlayervsPlayer(P1, P2);
             }
-                
+
 
             /* P1 = null;
              P2 = null;*/
 
         }
 
-        private void btnRefresh_Click(object sender, EventArgs e)
+        private void btnNewGame_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Do you want to refresh game ?", "Game Caro", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
+            if (MessageBox.Show("Do you want to new game ?", "Game Caro", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
             {
                 DrawChessBoard();
                 prgbCoolDown.Value = 0;
@@ -234,7 +284,7 @@ namespace CaroChessProject1
 
                 pnlChessBoard.Enabled = true;
                 btnStart.Enabled = false;
-                btnRefresh.Enabled = true;
+                btnNewGame.Enabled = true;
                 btnPlayervsPlayer.Enabled = true;
                 btnPlayervsComputer.Enabled = true;
                 btnUndo.Enabled = true;
@@ -245,18 +295,18 @@ namespace CaroChessProject1
                 {
                     lblScore.Text = "Score " + P1 + " " + score1 + " : " + score2 + " " + "Computer";
                     PlayervsCom(P1);
-                }else if (P1 != "" && P2 != "")
+                }
+                else if (P1 != "" && P2 != "")
                 {
                     lblScore.Text = "Score " + P1 + " " + score1 + " : " + score2 + " " + P2;
                     PlayervsPlayer(P1, P2);
-                }                 
+                }
             }
         }
 
         private void Mark(Button btn)
         {
             btn.BackgroundImage = Player[current].Mark;
-            //BackgroundMusic();
             Sound();
             //current = current == 1 ? 0 : 1;
         }
@@ -335,7 +385,7 @@ namespace CaroChessProject1
                 this.Hide();
                 pnlChessBoard.Enabled = false;
                 btnStart.Enabled = true;
-                btnRefresh.Enabled = false;
+                btnNewGame.Enabled = false;
                 btnPlayervsComputer.Enabled = false;
                 btnPlayervsPlayer.Enabled = false;
                 btnRedo.Enabled = false;
@@ -369,7 +419,7 @@ namespace CaroChessProject1
                 this.Hide();
                 pnlChessBoard.Enabled = false;
                 btnStart.Enabled = true;
-                btnRefresh.Enabled = false;
+                btnNewGame.Enabled = false;
                 btnPlayervsComputer.Enabled = false;
                 btnPlayervsPlayer.Enabled = false;
                 btnRedo.Enabled = false;
@@ -377,9 +427,10 @@ namespace CaroChessProject1
             }
 
         }
-         
 
-private void EndGame()
+
+
+        private void EndGame()
         {
             tmCoolDown.Stop();
             pnlChessBoard.Enabled = false;
@@ -392,11 +443,11 @@ private void EndGame()
             {
                 score1++;
                 score2++;
-                if (P2 == null)
+                if (PvsC == true)
                 {
                     lblScore.Text = "Score " + P1 + " " + score1 + " : " + score2 + " " + "Computer";
                 }
-                else if (P1 != "" && P2 != "")
+                else if (PvsP == true)
                 {
                     lblScore.Text = "Score " + P1 + " " + score1 + " : " + score2 + " " + P2;
                 }
@@ -413,11 +464,11 @@ private void EndGame()
                     score1++;
                 }
 
-                if (P2 == null)
+                if (PvsC == true)
                 {
                     lblScore.Text = "Score " + P1 + " " + score1 + " : " + score2 + " " + "Computer";
                 }
-                else if (P1 != "" && P2 != "")
+                else if (PvsP == true)
                 {
                     lblScore.Text = "Score " + P1 + " " + score1 + " : " + score2 + " " + P2;
                 }
@@ -425,7 +476,7 @@ private void EndGame()
                 MessageBox.Show($"Congratulations to player *{Player[current == 0 ? 1 : 0].Name}* for defeating *{Player[current].Name}* !!", "Congratulations", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
-            
+
         }
 
         private Point GetChessPoint(Button btn)
@@ -635,6 +686,7 @@ private void EndGame()
             return false;
         }
 
+
         private void tmCoolDown_Tick(object sender, EventArgs e)
         {
             prgbCoolDown.PerformStep();
@@ -661,12 +713,843 @@ private void EndGame()
             Redo();
         }
 
-     
+        public void StartComputer(Button btn)
+        {
+            Point point = PointCOM();
+
+            btn = Matrix[point.X][point.Y];
+            btn.BackgroundImage = Player[1].Mark;
+            Sound();
+            Comeback.Push(GetChessPoint(btn));
+            if (isEndGame(btn))
+            {
+                EndGame();
+            }
+        }
+
+        public Point PointCOM()
+        {
+            Button btn = new Button();
+            Point ChessPoint = new Point();
+
+            long MaxPoint = 0;
+
+            for (int i = 0; i < Cons.NumberChess_Height; i++)
+            {
+                for (int j = 0; j < Cons.NumberChess_Width; j++)
+                {
+                    if (Matrix[i][j].BackgroundImage == null)
+                    {
+                        long AttackPoint = AttackPoint_Ver(i, j) + AttackPoint_Hor(i, j) + AttackPoint_PriCros(i, j) + AttackPoint_Pri(i, j);
+                        long DefensePoint = DefensePoint_Ver(i, j) + DefensePoint_Hor(i, j) + DefensePoint_PriCros(i, j) + DefensePoint_Pri(i, j);
+
+                        long CurPoint = AttackPoint > DefensePoint ? AttackPoint : DefensePoint;
+                        long TotalPoint = (AttackPoint + DefensePoint) > CurPoint ? (AttackPoint + DefensePoint) : CurPoint;
+
+                        if (MaxPoint < TotalPoint)
+                        {
+                            MaxPoint = TotalPoint;
+
+                            ChessPoint = new Point(i, j);
+
+                        }
+
+                    }
+
+                }
+            }
+
+
+
+            return ChessPoint;
+        }
+        private long[] Attack = new long[6] { 0, 64, 4096, 262144, 16777216, 1073741824 };
+
+        private long[] Defense = new long[6] { 0, 8, 512, 32768, 2097152, 134217728 };
+
+        long AttackPoint_Ver(int row, int column)
+        {
+            long TotalPoint = 0;
+
+            int AllyNumber = 0;
+            int EnemyNumber = 0;
+            int AllyNumber2 = 0;
+            int EnemyNumber2 = 0;
+
+            
+
+            for (int count = 1; count < 6 && count + row < Cons.NumberChess_Height; count++)
+            {
+                if (Matrix[row + count][column].BackgroundImage == Player[1].Mark)
+                    AllyNumber++;
+                else
+                {
+                    if (Matrix[row + count][column].BackgroundImage == Player[0].Mark)
+                    {
+                        EnemyNumber++;
+                        break;
+                    }
+                    else
+                    {
+                        for (int count2 = 2; count2 < 6 && row + count2 < Cons.NumberChess_Height; count2++)
+                            if (Matrix[row + count2][column].BackgroundImage == Player[1].Mark)
+                            {
+                                AllyNumber2++;
+                            }
+                            else if (Matrix[row + count2][column].BackgroundImage == Player[0].Mark)
+                            {
+                                EnemyNumber2++;
+                                break;
+                            }
+                            else
+                                break;
+                        break;
+                    }
+                }
+            }
+            for (int count = 1; count < 6 && row - count >= 0; count++)
+            {
+                if (Matrix[row - count][column].BackgroundImage == Player[1].Mark)
+                    AllyNumber++;
+                else
+                {
+                    if (Matrix[row - count][column].BackgroundImage == Player[0].Mark)
+                    {
+                        EnemyNumber++;
+                        break;
+                    }
+                    else
+                    {
+                        for (int count2 = 2; count2 < 6 && row - count2 >= 0; count2++)
+                            if (Matrix[row - count2][column].BackgroundImage == Player[1].Mark)
+                            {
+                                AllyNumber2++;
+                            }
+                            else if (Matrix[row - count2][column].BackgroundImage == Player[0].Mark)
+                            {
+                                EnemyNumber2++;
+                                break;
+                            }
+                            else
+                                break;
+                        break;
+                    }
+                }
+            }
+
+
+
+            if (EnemyNumber == 2)
+                return 0;
+            if (EnemyNumber == 0)
+                TotalPoint += Attack[AllyNumber] * 2;
+            else
+                TotalPoint += Attack[AllyNumber];
+            if (EnemyNumber2 == 0)
+                TotalPoint += Attack[AllyNumber2] * 2;
+            else
+                TotalPoint += Attack[AllyNumber2];
+            if (AllyNumber >= AllyNumber2)
+                TotalPoint -= 1;
+            else
+                TotalPoint -= 2;
+            if (AllyNumber == 4)
+                TotalPoint *= 2;
+            if (AllyNumber == 0)
+                TotalPoint += Defense[EnemyNumber] * 2;
+            else
+                TotalPoint += Defense[EnemyNumber];
+            if (AllyNumber2 == 0)
+                TotalPoint += Defense[EnemyNumber2] * 2;
+            else
+                TotalPoint += Defense[EnemyNumber2];
+
+            return TotalPoint;
+        }
+
+        long AttackPoint_Hor(int row, int column)
+        {
+            long TotalPoint = 0;
+
+            int AllyNumber = 0;
+            int EnemyNumber = 0;
+            int AllyNumber2 = 0;
+            int EnemyNumber2 = 0;
+
+            
+
+            for (int count = 1; count < 6 && count + column < Cons.NumberChess_Width; count++)
+            {
+                if (Matrix[row][column + count].BackgroundImage == Player[1].Mark)
+                    AllyNumber++;
+                else
+                {
+                    if (Matrix[row][column + count].BackgroundImage == Player[0].Mark)
+                    {
+                        EnemyNumber++;
+                        break;
+                    }
+                    else
+                    {
+                        for (int count2 = 2; count2 < 6 && column + count2 < Cons.NumberChess_Width; count2++)
+                            if (Matrix[row][column + count2].BackgroundImage == Player[1].Mark)
+                            {
+                                AllyNumber2++;
+                            }
+                            else if (Matrix[row][column + count2].BackgroundImage == Player[0].Mark)
+                            {
+                                EnemyNumber2++;
+                                break;
+                            }
+                            else
+                                break;
+                        break;
+                    }
+                }
+
+            }
+            for (int count = 1; count < 6 && column - count >= 0; count++)
+            {
+                if (Matrix[row][column - count].BackgroundImage == Player[1].Mark)
+                    AllyNumber++;
+                else
+                {
+                    if (Matrix[row][column - count].BackgroundImage == Player[0].Mark)
+                    {
+                        EnemyNumber++;
+                        break;
+                    }
+                    else
+                    {
+                        for (int count2 = 2; count2 < 6 && column - count2 >= 0; count2++)
+                            if (Matrix[row][column - count2].BackgroundImage == Player[1].Mark)
+                            {
+                                AllyNumber2++;
+                            }
+                            else if (Matrix[row][column - count2].BackgroundImage == Player[0].Mark)
+                            {
+                                EnemyNumber2++;
+                                break;
+                            }
+                            else
+                                break;
+                        break;
+                    }
+                }
+            }
+
+            if (EnemyNumber == 2)
+                return 0;
+            if (EnemyNumber == 0)
+                TotalPoint += Attack[AllyNumber] * 2;
+            else
+                TotalPoint += Attack[AllyNumber];
+            if (EnemyNumber2 == 0)
+                TotalPoint += Attack[AllyNumber2] * 2;
+            else
+                TotalPoint += Attack[AllyNumber2];
+            if (AllyNumber >= AllyNumber2)
+                TotalPoint -= 1;
+            else
+                TotalPoint -= 2;
+            if (AllyNumber == 4)
+                TotalPoint *= 2;
+            if (AllyNumber == 0)
+                TotalPoint += Defense[EnemyNumber] * 2;
+            else
+                TotalPoint += Defense[EnemyNumber];
+            if (AllyNumber2 == 0)
+                TotalPoint += Defense[EnemyNumber2] * 2;
+            else
+                TotalPoint += Defense[EnemyNumber2];
+
+            return TotalPoint;
+        }
+
+        long AttackPoint_PriCros(int row, int column)
+        {
+            long TotalPoint = 0;
+
+            int AllyNumber = 0;
+            int EnemyNumber = 0;
+            int AllyNumber2 = 0;
+            int EnemyNumber2 = 0;
+
+
+            for (int count = 1; count < 6 && count + row < Cons.NumberChess_Height && column + count < Cons.NumberChess_Width; count++)
+            {
+                if (Matrix[row + count][column + count].BackgroundImage == Player[1].Mark)
+                    AllyNumber++;
+                else
+                {
+                    if (Matrix[row + count][column + count].BackgroundImage == Player[0].Mark)
+                    {
+
+                        EnemyNumber++;
+                        break;
+                    }
+                    else
+                    {
+                        for (int count2 = 2; count2 < 6 && column + count2 < Cons.NumberChess_Width && row + count2 < Cons.NumberChess_Height; count2++)
+                            if (Matrix[row + count2][column + count2].BackgroundImage == Player[1].Mark)
+                            {
+                                AllyNumber2++;
+                            }
+                            else if (Matrix[row + count2][column + count2].BackgroundImage == Player[0].Mark)
+                            {
+                                EnemyNumber2++;
+                                break;
+                            }
+                            else
+                                break;
+                        break;
+                    }
+                }
+            }
+            for (int count = 1; count < 6 && row - count >= 0 && column - count >= 0; count++)
+            {
+                if (Matrix[row - count][column - count].BackgroundImage == Player[1].Mark)
+                    AllyNumber++;
+                else
+                {
+                    if (Matrix[row - count][column - count].BackgroundImage == Player[0].Mark)
+                    {
+                        EnemyNumber++;
+                        break;
+                    }
+                    else
+                    {
+                        for (int count2 = 2; count2 < 6 && column - count2 >= 0 && row - count2 >= 0; count2++)
+                            if (Matrix[row - count2][column - count2].BackgroundImage == Player[1].Mark)
+                            {
+                                AllyNumber2++;
+                            }
+                            else if (Matrix[row - count2][column - count2].BackgroundImage == Player[0].Mark)
+                            {
+                                EnemyNumber2++;
+                                break;
+                            }
+                            else
+                                break;
+                        break;
+                    }
+                }
+            }
+
+            if (EnemyNumber == 2)
+                return 0;
+            if (EnemyNumber == 0)
+                TotalPoint += Attack[AllyNumber] * 2;
+            else
+                TotalPoint += Attack[AllyNumber];
+            if (EnemyNumber2 == 0)
+                TotalPoint += Attack[AllyNumber2] * 2;
+            else
+                TotalPoint += Attack[AllyNumber2];
+            if (AllyNumber >= AllyNumber2)
+                TotalPoint -= 1;
+            else
+                TotalPoint -= 2;
+
+            if (AllyNumber == 4)
+                TotalPoint *= 2;
+            if (AllyNumber == 0)
+                TotalPoint += Defense[EnemyNumber] * 2;
+            else
+                TotalPoint += Defense[EnemyNumber];
+            if (AllyNumber2 == 0)
+                TotalPoint += Defense[EnemyNumber2] * 2;
+            else
+                TotalPoint += Defense[EnemyNumber2];
+
+            return TotalPoint;
+        }
+
+        long AttackPoint_Pri(int row, int column)
+        {
+
+            long TotalPoint = 0;
+
+            int AllyNumber = 0;
+            int EnemyNumber = 0;
+            int AllyNumber2 = 0;
+            int EnemyNumber2 = 0;
+
+            for (int count = 1; count < 6 && count + row < Cons.NumberChess_Height && column - count >= 0; count++)
+            {
+                if (Matrix[row + count][column - count].BackgroundImage == Player[1].Mark)
+                    AllyNumber++;
+                else
+                {
+                    if (Matrix[row + count][column - count].BackgroundImage == Player[0].Mark)
+                    {
+                        EnemyNumber++;
+                        break;
+                    }
+                    else
+                    {
+                        for (int count2 = 2; count2 < 6 && column - count2 >= 0 && row + count2 < Cons.NumberChess_Height; count2++)
+                            if (Matrix[row + count2][column - count2].BackgroundImage == Player[1].Mark)
+                            {
+                                AllyNumber2++;
+                            }
+                            else if (Matrix[row + count2][column - count2].BackgroundImage == Player[0].Mark)
+                            {
+                                EnemyNumber2++;
+                                break;
+                            }
+                            else
+                                break;
+                        break;
+                    }
+                }
+            }
+            for (int count = 1; count < 6 && row - count >= 0 && column + count < Cons.NumberChess_Width; count++)
+            {
+                if (Matrix[row - count][column + count].BackgroundImage == Player[1].Mark)
+                    AllyNumber++;
+                else
+                {
+                    if (Matrix[row - count][column + count].BackgroundImage == Player[0].Mark)
+                    {
+                        EnemyNumber++;
+                        break;
+                    }
+                    else
+                    {
+                        for (int count2 = 1; count2 < 6 && column + count2 < Cons.NumberChess_Width && row - count2 >= 0; count2++)
+                            if (Matrix[row - count2][column + count2].BackgroundImage == Player[1].Mark)
+                            {
+                                AllyNumber2++;
+                            }
+                            else if (Matrix[row - count2][column + count2].BackgroundImage == Player[0].Mark)
+                            {
+                                EnemyNumber2++;
+                                break;
+                            }
+                            else
+                                break;
+                        break;
+                    }
+                }
+            }
+
+            if (EnemyNumber == 2)
+                return 0;
+            if (EnemyNumber == 0)
+                TotalPoint += Attack[AllyNumber] * 2;
+            else
+                TotalPoint += Attack[AllyNumber];
+            if (EnemyNumber2 == 0)
+                TotalPoint += Attack[AllyNumber2] * 2;
+            else
+                TotalPoint += Attack[AllyNumber2];
+            if (AllyNumber >= AllyNumber2)
+                TotalPoint -= 1;
+            else
+                TotalPoint -= 2;
+            if (AllyNumber == 4)
+                TotalPoint *= 2;
+            if (AllyNumber == 0)
+                TotalPoint += Defense[EnemyNumber] * 2;
+            else
+                TotalPoint += Defense[EnemyNumber];
+            if (AllyNumber2 == 0)
+                TotalPoint += Defense[EnemyNumber2] * 2;
+            else
+                TotalPoint += Defense[EnemyNumber2];
+
+            return TotalPoint;
+        }
+
+        long DefensePoint_Ver(int row, int column)
+        {
+            long TotalPoint = 0;
+
+            int AllyNumber = 0;
+            int EnemyNumber = 0;
+            int AllyNumber2 = 0;
+            int EnemyNumber2 = 0;
+
+
+
+            for (int count = 1; count < 6 && count + row < Cons.NumberChess_Height; count++)
+            {
+                if (Matrix[row + count][column].BackgroundImage == Player[1].Mark)
+                {
+                    AllyNumber++;
+                    break;
+                }
+
+                else
+                {
+                    if (Matrix[row + count][column].BackgroundImage == Player[0].Mark)
+                        EnemyNumber++;
+                    else
+                    {
+                        for (int count2 = 2; count2 < 6 && row + count2 < Cons.NumberChess_Height; count2++)
+                            if (Matrix[row + count2][column].BackgroundImage == Player[1].Mark)
+                            {
+                                AllyNumber2++;
+                                break;
+                            }
+                            else if (Matrix[row + count2][column].BackgroundImage == Player[0].Mark)
+                            {
+                                EnemyNumber2++;
+                            }
+                            else
+                                break;
+                        break;
+                    }
+                }
+            }
+            for (int count = 1; count < 6 && row - count >= 0; count++)
+            {
+                if (Matrix[row - count][column].BackgroundImage == Player[1].Mark)
+                {
+                    AllyNumber++;
+                    break;
+                }
+                else
+                {
+                    if (Matrix[row - count][column].BackgroundImage == Player[0].Mark)
+                        EnemyNumber++;
+                    else
+                    {
+                        for (int count2 = 2; count2 < 6 && row - count2 >= 0; count2++)
+                            if (Matrix[row - count2][column].BackgroundImage == Player[1].Mark)
+                            {
+                                AllyNumber2++;
+                                break;
+                            }
+                            else if (Matrix[row - count2][column].BackgroundImage == Player[0].Mark)
+                            {
+                                EnemyNumber2++;
+                            }
+                            else
+                                break;
+                        break;
+                    }
+                }
+            }
+
+
+
+            if (AllyNumber == 2)
+                return 0;
+            if (AllyNumber == 0)
+                TotalPoint += Defense[EnemyNumber] * 2;
+            else
+                TotalPoint += Defense[EnemyNumber];
+            /* 
+            if (_SoQT2 == 0)
+                _Diem_Tong += _MD_PT[_SoQD2] * 2;
+            else
+                _Diem_Tong += _MD_PT[_SoQD2];
+            */
+            if (EnemyNumber >= EnemyNumber2)
+                TotalPoint -= 1;
+            else
+                TotalPoint -= 2;
+            if (EnemyNumber == 4)
+                TotalPoint *= 2;
+
+            return TotalPoint;
+        }
+
+        long DefensePoint_Hor(int row, int column)
+        {
+            long TotalPoint = 0;
+
+            int AllyNumber = 0;
+            int EnemyNumber = 0;
+            int AllyNumber2 = 0;
+            int EnemyNumber2 = 0;
+
+            for (int count = 1; count < 6 && count + column < Cons.NumberChess_Width; count++)
+            {
+                if (Matrix[row][column + count].BackgroundImage == Player[1].Mark)
+                {
+                    AllyNumber++;
+                    break;
+                }
+                else
+                {
+                    if (Matrix[row][column + count].BackgroundImage == Player[0].Mark)
+                        EnemyNumber++;
+                    else
+                    {
+                        for (int count2 = 2; count2 < 6 && column + count2 < Cons.NumberChess_Width; count2++)
+                            if (Matrix[row][column + count2].BackgroundImage == Player[1].Mark)
+                            {
+                                AllyNumber2++;
+                                break;
+                            }
+                            else if (Matrix[row][column + count2].BackgroundImage == Player[0].Mark)
+                            {
+                                EnemyNumber2++;
+                            }
+                            else
+                                break;
+                        break;
+                    }
+                }
+            }
+            for (int count = 1; count < 6 && column - count >= 0; count++)
+            {
+                if (Matrix[row][column - count].BackgroundImage == Player[1].Mark)
+                {
+                    AllyNumber++;
+                    break;
+                }
+                else
+                {
+                    if (Matrix[row][column - count].BackgroundImage == Player[0].Mark)
+                        EnemyNumber++;
+                    else
+                    {
+                        for (int count2 = 2; count2 < 6 && column - count2 >= 0; count2++)
+                            if (Matrix[row][column - count2].BackgroundImage == Player[1].Mark)
+                            {
+                                AllyNumber2++;
+                                break;
+                            }
+                            else if (Matrix[row][column - count2].BackgroundImage == Player[0].Mark)
+                            {
+                                EnemyNumber2++;
+                            }
+                            else break;
+                        break;
+                    }
+                }
+            }
+            if (AllyNumber == 2)
+                return 0;
+            if (AllyNumber == 0)
+                TotalPoint += Defense[EnemyNumber] * 2;
+            else
+                TotalPoint += Defense[EnemyNumber];
+            
+            if (EnemyNumber >= EnemyNumber2)
+                TotalPoint -= 1;
+            else
+                TotalPoint -= 2;
+            if (EnemyNumber == 4)
+                TotalPoint *= 2;
+
+            return TotalPoint;
+        }
+
+        long DefensePoint_PriCros(int row, int column)
+        {
+            long TotalPoint = 0;
+
+            int AllyNumber = 0;
+            int EnemyNumber = 0;
+            int AllyNumber2 = 0;
+            int EnemyNumber2 = 0;
+
+            for (int count = 1; count < 6 && count + row < Cons.NumberChess_Height && column + count < Cons.NumberChess_Width; count++)
+            {
+                if (Matrix[row + count][column + count].BackgroundImage == Player[1].Mark)
+                {
+                    AllyNumber++;
+                    break;
+                }
+                else
+                {
+                    if (Matrix[row + count][column + count].BackgroundImage == Player[0].Mark)
+                        EnemyNumber++;
+                    else
+                    {
+                        for (int count2 = 2; count2 < 6 && row + count2 < Cons.NumberChess_Height && column + count2 < Cons.NumberChess_Width; count2++)
+                            if (Matrix[row + count2][column + count2].BackgroundImage == Player[1].Mark)
+                            {
+                                AllyNumber2++;
+                                break;
+                            }
+                            else if (Matrix[row + count2][column + count2].BackgroundImage == Player[0].Mark)
+                            {
+                                EnemyNumber2++;
+                            }
+                            else
+                                break;
+                        break;
+                    }
+
+                }
+            }
+            for (int count = 1; count < 6 && row - count >= 0 && column - count >= 0; count++)
+            {
+                if (Matrix[row - count][column - count].BackgroundImage == Player[1].Mark)
+                {
+                    AllyNumber++;
+                    break;
+                }
+                else
+                {
+                    if (Matrix[row - count][column - count].BackgroundImage == Player[0].Mark)
+                        EnemyNumber++;
+                    else
+                    {
+                        for (int count2 = 2; count2 < 6 && column - count2 >= 0 && row - count2 >= 0; count2++)
+                            if (Matrix[row - count2][column - count2].BackgroundImage == Player[1].Mark)
+                            {
+                                AllyNumber2++;
+                                break;
+                            }
+                            else if (Matrix[row - count2][column - count2].BackgroundImage == Player[0].Mark)
+                            {
+                                EnemyNumber2++;
+                            }
+                            else
+                                break;
+                        break;
+                    }
+
+                }
+            }
+
+            if (AllyNumber == 2)
+                return 0;
+            if (AllyNumber == 0)
+                TotalPoint += Defense[EnemyNumber] * 2;
+            else
+                TotalPoint += Defense[EnemyNumber];
+            
+            if (EnemyNumber >= EnemyNumber2)
+                TotalPoint -= 1;
+            else
+                TotalPoint -= 2;
+            if (EnemyNumber == 4)
+                TotalPoint *= 2;
+
+            return TotalPoint;
+        }
+        long DefensePoint_Pri(int row, int column)
+        {
+
+            long TotalPoint = 0;
+
+            int AllyNumber = 0;
+            int EnemyNumber = 0;
+            int AllyNumber2 = 0;
+            int EnemyNumber2 = 0;
+
+            for (int count = 1; count < 6 && count + row < Cons.NumberChess_Height && column - count >= 0; count++)
+            {
+                if (Matrix[row + count][column - count].BackgroundImage == Player[1].Mark)
+                {
+                    AllyNumber++;
+                    break;
+                }
+                else
+                {
+                    if (Matrix[row + count][column - count].BackgroundImage == Player[0].Mark)
+                        EnemyNumber++;
+                    else
+                    {
+                        for (int count2 = 2; count2 < 6 && row + count2 < Cons.NumberChess_Height && column - count2 >= 0; count2++)
+                            if (Matrix[row + count2][column - count2].BackgroundImage == Player[1].Mark)
+                            {
+                                AllyNumber2++;
+                                break;
+                            }
+                            else if (Matrix[row + count2][column + -count2].BackgroundImage == Player[0].Mark)
+                            {
+                                EnemyNumber2++;
+                            }
+                            else
+                                break;
+                        break;
+                    }
+
+                }
+            }
+            for (int count = 1; count < 6 && row - count >= 0 && column + count < Cons.NumberChess_Width; count++)
+            {
+                if (Matrix[row - count][column + count].BackgroundImage == Player[1].Mark)
+                {
+                    AllyNumber++;
+                    break;
+                }
+                else
+                {
+                    if (Matrix[row - count][column + count].BackgroundImage == Player[0].Mark)
+                        EnemyNumber++;
+                    else
+                    {
+                        for (int count2 = 2; count2 < 6 && row - count2 >= 0 && column + count2 < Cons.NumberChess_Width; count2++)
+                            if (Matrix[row - count2][column + count2].BackgroundImage == Player[1].Mark)
+                            {
+                                AllyNumber2++;
+                                break;
+                            }
+                            else if (Matrix[row - count2][column + count2].BackgroundImage == Player[0].Mark)
+                            {
+                                EnemyNumber2++;
+                            }
+                            else
+                                break;
+                        break;
+                    }
+                }
+            }
+
+            if (AllyNumber == 2)
+                return 0;
+            if (AllyNumber == 0)
+                TotalPoint += Defense[EnemyNumber] * 2;
+            else
+                TotalPoint += Defense[EnemyNumber];
+            
+            if (EnemyNumber >= EnemyNumber2)
+                TotalPoint -= 1;
+            else
+                TotalPoint -= 2;
+            if (EnemyNumber == 4)
+                TotalPoint *= 2;
+
+            return TotalPoint;
+        }
+
+        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Quit();
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            if (English == true)
+                MessageBox.Show("You can choose 1 of 2 game modes:\n\n-Player Vs Player\n\n-Player Vs COM\n\nAfter entering the full player name and pressing the OK button.\n\nYou will be returned to the main screen\n\nYou need to press the START button to start chess!!");
+            else if (VietNam == true)
+                MessageBox.Show("Bạn có thể lựa chọn 1 trong 2 chế độ chơi:\n\n-Player vs Player\n\n-Player vs COM\n\nSau khi nhập đầy đủ tên người chơi và nhấn nút OK.\n\nBạn sẽ được quay lại màn hình chính\n\nBạn cần nhấn vào nút START để bắt đầu đánh cờ!!");
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("CaroChess Project 1 !");
+        }
+
+        private void englishToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            English = true;
+            VietNam = false;
+            lblLaws.Text = "- Both sides take turns playing each\non the board. \n- Which ever side reaches >= 5 on 1 \nhorizontally, vertically or diagonally \nwithout blocking both ends first \nwins.\n- If all the boxes on the board are \n played and there is still no winner,\n it will be considered a draw.";
+            gpbLaws.Text = "Rules";
+        }
+
+        private void tiếngViệtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            English = false;
+            VietNam = true;
+            lblLaws.Text = "- Hai bên lần lượt đánh vào từng\nô trên bàn cờ.\n- Bên nào đạt được >= 5 con trên \n1 hàng ngang, dọc hoặc chéo mà \nkhông bị chặn cả 2 đầu trước sẽ \nthắng.\n- Nếu đánh hết tất cả các ô trên \nbàn cờ mà vẫn chưa có người chiến \nthắng thì xem như hòa.";
+            gpbLaws.Text = "Luật Chơi";
+        }
     }
 }
 
-       
 
 
-    
 
