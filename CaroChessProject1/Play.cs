@@ -376,6 +376,7 @@ namespace CaroChessProject1
                 prgbCoolDown.Value = 0;
                 tmCoolDown.Stop();
                 score1 = score2 = 0;
+                P1 = P2 = null;
                 if (P1vsP2 == null)
                 {
                     P1vsP2 = new frmPvP();
@@ -410,6 +411,7 @@ namespace CaroChessProject1
                 prgbCoolDown.Value = 0;
                 tmCoolDown.Stop();
                 score1 = score2 = 0;
+                P1 = P2 = null;
                 if (PvsCOM == null)
                 {
                     PvsCOM = new frmPvC();
