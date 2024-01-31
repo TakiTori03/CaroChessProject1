@@ -1522,7 +1522,6 @@ namespace CaroChessProject1
 
         private void helpToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             if (English == true)
                 MessageBox.Show("You can choose 1 of 2 game modes:\n\n-Player Vs Player\n\n-Player Vs COM\n\nAfter entering the full player name and pressing the OK button.\n\nYou will be returned to the main screen\n\nYou need to press the START button to start chess!!");
             else if (VietNam == true)
