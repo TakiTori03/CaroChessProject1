@@ -41,6 +41,8 @@
             editToolStripMenuItem = new ToolStripMenuItem();
             undoToolStripMenuItem = new ToolStripMenuItem();
             redoToolStripMenuItem = new ToolStripMenuItem();
+            stopToolStripMenuItem = new ToolStripMenuItem();
+            continueToolStripMenuItem = new ToolStripMenuItem();
             settingToolStripMenuItem = new ToolStripMenuItem();
             languageToolStripMenuItem = new ToolStripMenuItem();
             englishToolStripMenuItem = new ToolStripMenuItem();
@@ -91,7 +93,7 @@
             // 
             newToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { playervsPlayerToolStripMenuItem, playervsComToolStripMenuItem });
             newToolStripMenuItem.Name = "newToolStripMenuItem";
-            newToolStripMenuItem.Size = new Size(103, 22);
+            newToolStripMenuItem.Size = new Size(146, 22);
             newToolStripMenuItem.Text = "&New";
             // 
             // playervsPlayerToolStripMenuItem
@@ -111,25 +113,30 @@
             // quitToolStripMenuItem
             // 
             quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            quitToolStripMenuItem.Size = new Size(103, 22);
+            quitToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Q;
+            quitToolStripMenuItem.Size = new Size(146, 22);
             quitToolStripMenuItem.Text = "&Quit";
             quitToolStripMenuItem.Click += quitToolStripMenuItem_Click;
             // 
             // openToolStripMenuItem
             // 
             openToolStripMenuItem.Name = "openToolStripMenuItem";
-            openToolStripMenuItem.Size = new Size(103, 22);
+            openToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.O;
+            openToolStripMenuItem.Size = new Size(146, 22);
             openToolStripMenuItem.Text = "&Open";
+            openToolStripMenuItem.Click += openToolStripMenuItem_Click;
             // 
             // saveToolStripMenuItem
             // 
             saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            saveToolStripMenuItem.Size = new Size(103, 22);
+            saveToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S;
+            saveToolStripMenuItem.Size = new Size(146, 22);
             saveToolStripMenuItem.Text = "&Save";
+            saveToolStripMenuItem.Click += saveToolStripMenuItem_Click;
             // 
             // editToolStripMenuItem
             // 
-            editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { undoToolStripMenuItem, redoToolStripMenuItem });
+            editToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { undoToolStripMenuItem, redoToolStripMenuItem, stopToolStripMenuItem, continueToolStripMenuItem });
             editToolStripMenuItem.Name = "editToolStripMenuItem";
             editToolStripMenuItem.Size = new Size(39, 20);
             editToolStripMenuItem.Text = "&Edit";
@@ -140,7 +147,7 @@
             undoToolStripMenuItem.Name = "undoToolStripMenuItem";
             undoToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+Z";
             undoToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Z;
-            undoToolStripMenuItem.Size = new Size(144, 22);
+            undoToolStripMenuItem.Size = new Size(165, 22);
             undoToolStripMenuItem.Text = "&Undo";
             undoToolStripMenuItem.Click += undoToolStripMenuItem_Click;
             // 
@@ -150,9 +157,27 @@
             redoToolStripMenuItem.Name = "redoToolStripMenuItem";
             redoToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+Y";
             redoToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.Y;
-            redoToolStripMenuItem.Size = new Size(144, 22);
+            redoToolStripMenuItem.Size = new Size(165, 22);
             redoToolStripMenuItem.Text = "&Redo";
             redoToolStripMenuItem.Click += redoToolStripMenuItem_Click;
+            // 
+            // stopToolStripMenuItem
+            // 
+            stopToolStripMenuItem.Enabled = false;
+            stopToolStripMenuItem.Name = "stopToolStripMenuItem";
+            stopToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.P;
+            stopToolStripMenuItem.Size = new Size(165, 22);
+            stopToolStripMenuItem.Text = "&Stop";
+            stopToolStripMenuItem.Click += stopToolStripMenuItem_Click;
+            // 
+            // continueToolStripMenuItem
+            // 
+            continueToolStripMenuItem.Enabled = false;
+            continueToolStripMenuItem.Name = "continueToolStripMenuItem";
+            continueToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.C;
+            continueToolStripMenuItem.Size = new Size(165, 22);
+            continueToolStripMenuItem.Text = "&Continue";
+            continueToolStripMenuItem.Click += continentToolStripMenuItem_Click;
             // 
             // settingToolStripMenuItem
             // 
@@ -165,34 +190,34 @@
             // 
             languageToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { englishToolStripMenuItem, tiếngViệtToolStripMenuItem });
             languageToolStripMenuItem.Name = "languageToolStripMenuItem";
-            languageToolStripMenuItem.Size = new Size(180, 22);
+            languageToolStripMenuItem.Size = new Size(126, 22);
             languageToolStripMenuItem.Text = "&Language";
             // 
             // englishToolStripMenuItem
             // 
             englishToolStripMenuItem.Name = "englishToolStripMenuItem";
-            englishToolStripMenuItem.Size = new Size(180, 22);
+            englishToolStripMenuItem.Size = new Size(126, 22);
             englishToolStripMenuItem.Text = "English";
             englishToolStripMenuItem.Click += englishToolStripMenuItem_Click;
             // 
             // tiếngViệtToolStripMenuItem
             // 
             tiếngViệtToolStripMenuItem.Name = "tiếngViệtToolStripMenuItem";
-            tiếngViệtToolStripMenuItem.Size = new Size(180, 22);
+            tiếngViệtToolStripMenuItem.Size = new Size(126, 22);
             tiếngViệtToolStripMenuItem.Text = "Tiếng Việt";
             tiếngViệtToolStripMenuItem.Click += tiếngViệtToolStripMenuItem_Click;
             // 
             // helpToolStripMenuItem
             // 
             helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            helpToolStripMenuItem.Size = new Size(180, 22);
+            helpToolStripMenuItem.Size = new Size(126, 22);
             helpToolStripMenuItem.Text = "Help";
             helpToolStripMenuItem.Click += helpToolStripMenuItem_Click;
             // 
             // aboutToolStripMenuItem
             // 
             aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            aboutToolStripMenuItem.Size = new Size(180, 22);
+            aboutToolStripMenuItem.Size = new Size(126, 22);
             aboutToolStripMenuItem.Text = "About";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
             // 
@@ -229,10 +254,10 @@
             // txbPlayerName
             // 
             txbPlayerName.Enabled = false;
-            txbPlayerName.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txbPlayerName.Font = new Font("Segoe UI Black", 14.25F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             txbPlayerName.Location = new Point(7, 401);
             txbPlayerName.Name = "txbPlayerName";
-            txbPlayerName.Size = new Size(124, 25);
+            txbPlayerName.Size = new Size(124, 33);
             txbPlayerName.TabIndex = 4;
             // 
             // btnStart
@@ -337,9 +362,9 @@
             pnlChessBoard.BackgroundImageLayout = ImageLayout.Stretch;
             pnlChessBoard.BorderStyle = BorderStyle.FixedSingle;
             pnlChessBoard.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            pnlChessBoard.Location = new Point(225, 21);
+            pnlChessBoard.Location = new Point(225, 25);
             pnlChessBoard.Name = "pnlChessBoard";
-            pnlChessBoard.Size = new Size(865, 688);
+            pnlChessBoard.Size = new Size(865, 679);
             pnlChessBoard.TabIndex = 14;
             // 
             // tmCoolDown
@@ -460,5 +485,7 @@
         private ToolStripMenuItem tiếngViệtToolStripMenuItem;
         private ToolStripMenuItem helpToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem;
+        private ToolStripMenuItem stopToolStripMenuItem;
+        private ToolStripMenuItem continueToolStripMenuItem;
     }
 }

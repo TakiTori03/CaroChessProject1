@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\linhn\\OneDrive\\Documents\\GitHub\\CaroChessProject1\\CaroChessProject1\\CaroChessProject1.csproj",
+      "projectUniqueName": "C:\\Users\\linhn\\source\\repos\\CaroChessProject1\\CaroChessProject1\\CaroChessProject1.csproj",
       "projectName": "CaroChessProject1",
-      "projectPath": "C:\\Users\\linhn\\OneDrive\\Documents\\GitHub\\CaroChessProject1\\CaroChessProject1\\CaroChessProject1.csproj",
+      "projectPath": "C:\\Users\\linhn\\source\\repos\\CaroChessProject1\\CaroChessProject1\\CaroChessProject1.csproj",
       "packagesPath": "C:\\Users\\linhn\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\linhn\\OneDrive\\Documents\\GitHub\\CaroChessProject1\\CaroChessProject1\\obj\\",
+      "outputPath": "C:\\Users\\linhn\\source\\repos\\CaroChessProject1\\CaroChessProject1\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\linhn\\AppData\\Roaming\\NuGet\\NuGet.Config",

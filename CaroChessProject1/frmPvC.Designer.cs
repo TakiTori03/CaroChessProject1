@@ -80,9 +80,10 @@
             // 
             // txbPlayerName
             // 
+            txbPlayerName.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             txbPlayerName.Location = new Point(236, 75);
             txbPlayerName.Name = "txbPlayerName";
-            txbPlayerName.Size = new Size(163, 23);
+            txbPlayerName.Size = new Size(163, 29);
             txbPlayerName.TabIndex = 3;
             txbPlayerName.TextChanged += txbPlayerName_TextChanged;
             // 

@@ -254,6 +254,8 @@ namespace CaroChessProject1
             btnRedo.Enabled = true;
             undoToolStripMenuItem.Enabled = true;
             redoToolStripMenuItem.Enabled = true;
+            stopToolStripMenuItem.Enabled = true;
+            continueToolStripMenuItem.Enabled = true;
 
             if (P2 == null)
             {
@@ -778,7 +780,7 @@ namespace CaroChessProject1
             int AllyNumber2 = 0;
             int EnemyNumber2 = 0;
 
-            
+
 
             for (int count = 1; count < 6 && count + row < Cons.NumberChess_Height; count++)
             {
@@ -878,7 +880,7 @@ namespace CaroChessProject1
             int AllyNumber2 = 0;
             int EnemyNumber2 = 0;
 
-            
+
 
             for (int count = 1; count < 6 && count + column < Cons.NumberChess_Width; count++)
             {
@@ -1331,7 +1333,7 @@ namespace CaroChessProject1
                 TotalPoint += Defense[EnemyNumber] * 2;
             else
                 TotalPoint += Defense[EnemyNumber];
-            
+
             if (EnemyNumber >= EnemyNumber2)
                 TotalPoint -= 1;
             else
@@ -1418,7 +1420,7 @@ namespace CaroChessProject1
                 TotalPoint += Defense[EnemyNumber] * 2;
             else
                 TotalPoint += Defense[EnemyNumber];
-            
+
             if (EnemyNumber >= EnemyNumber2)
                 TotalPoint -= 1;
             else
@@ -1504,7 +1506,7 @@ namespace CaroChessProject1
                 TotalPoint += Defense[EnemyNumber] * 2;
             else
                 TotalPoint += Defense[EnemyNumber];
-            
+
             if (EnemyNumber >= EnemyNumber2)
                 TotalPoint -= 1;
             else
@@ -1548,9 +1550,123 @@ namespace CaroChessProject1
             lblLaws.Text = "- Hai bên lần lượt đánh vào từng\nô trên bàn cờ.\n- Bên nào đạt được >= 5 con trên \n1 hàng ngang, dọc hoặc chéo mà \nkhông bị chặn cả 2 đầu trước sẽ \nthắng.\n- Nếu đánh hết tất cả các ô trên \nbàn cờ mà vẫn chưa có người chiến \nthắng thì xem như hòa.";
             gpbLaws.Text = "Luật Chơi";
         }
+
+        private void SaveGame()
+        {
+            SaveFileDialog Save = new SaveFileDialog();
+            Save.Filter = "Carofile(*.cro)|*.cro";
+            Save.RestoreDirectory = true;
+
+            if (Save.ShowDialog() == DialogResult.OK)
+            {
+                StreamWriter myStream = new StreamWriter(Save.FileName);
+                int cur2 = current;
+                int numberChess = Comeback.Count;
+                if (Save.FileName.CompareTo("") != 0)
+                {
+                    myStream.WriteLine(Current);
+
+                    myStream.WriteLine(CheDo);
+                    myStream.WriteLine(Player[0].Name);
+                    myStream.WriteLine(Player[1].Name);
+                    myStream.WriteLine(numberChess);
+
+                    for (int i = Comeback.Count; i > 0; i--)
+                    {
+                        Point point = Comeback.Pop();
+                        myStream.WriteLine(point.X);
+                        myStream.WriteLine(point.Y);
+                        cur2 = cur2 == 0 ? 1 : 0;
+                        myStream.WriteLine(cur2);
+                    }
+                }
+                myStream.Close();
+            }
+        }
+
+        private void OpenGame()
+        {
+            DrawChessBoard();
+
+            pnlChessBoard.Enabled = true;
+            btnStart.Enabled = false;
+            btnNewGame.Enabled = true;
+            btnPlayervsPlayer.Enabled = true;
+            btnPlayervsComputer.Enabled = true;
+            btnUndo.Enabled = true;
+            btnRedo.Enabled = true;
+            undoToolStripMenuItem.Enabled = true;
+            redoToolStripMenuItem.Enabled = true;
+
+            OpenFileDialog Open = new OpenFileDialog();
+            Open.Filter = "Caro file (*.cro)|*.cro";
+            Open.ShowDialog();
+            if (Open.FileName.CompareTo("") != 0)
+            {
+                StreamReader FR = new StreamReader(Open.FileName);
+                score1 = score2 = 0;
+                int CurentPlay = Convert.ToInt32(FR.ReadLine());
+                int CheDo = Convert.ToInt32(FR.ReadLine());
+                if (CheDo == 1)
+                {
+                    String P1 = Convert.ToString(FR.ReadLine());
+                    String P2 = Convert.ToString(FR.ReadLine());
+                    PlayervsPlayer(P1, P2);
+                    Current = CurentPlay;
+                    changePlayer();
+                    lblScore.Text = "Score " + P1 + " " + score1 + " : " + score2 + " " + P2;
+                }
+                else if (CheDo == 2)
+                {
+                    String P1 = Convert.ToString(FR.ReadLine());
+                    String P2 = Convert.ToString(FR.ReadLine());
+                    PlayervsCom(P1);
+                    Current = CurentPlay;
+                    changePlayer();
+                    lblScore.Text = "Score " + P1 + " " + score1 + " : " + score2 + " " + "Computer";
+                }
+                int numberChess = Convert.ToInt32(FR.ReadLine());
+                for (int i = numberChess; i > 0; i--)
+                {
+                    int X = Convert.ToInt32(FR.ReadLine());
+                    int Y = Convert.ToInt32(FR.ReadLine());
+                    int Index = Convert.ToInt32(FR.ReadLine());
+                    Point point = new Point(X, Y);
+                    Button btn = Matrix[point.Y][point.X];
+                    btn.BackgroundImage = Player[Index].Mark;
+                }
+                FR.Close();
+            }
+
+        }
+
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tmCoolDown.Stop();
+            OpenGame();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tmCoolDown.Stop();
+            SaveGame();
+            tmCoolDown.Start();
+        }
+
+        private void stopToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tmCoolDown.Stop();
+            pnlChessBoard.Enabled = false;
+        }
+
+        private void continentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            tmCoolDown.Start();
+            pnlChessBoard.Enabled = true;
+        }
     }
+
 }
-
-
 
 

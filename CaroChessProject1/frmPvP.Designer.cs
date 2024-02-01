@@ -82,17 +82,19 @@
             // 
             // txbPlayerName1
             // 
+            txbPlayerName1.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             txbPlayerName1.Location = new Point(223, 76);
             txbPlayerName1.Name = "txbPlayerName1";
-            txbPlayerName1.Size = new Size(150, 23);
+            txbPlayerName1.Size = new Size(150, 29);
             txbPlayerName1.TabIndex = 3;
             txbPlayerName1.TextChanged += txbPlayerName1_TextChanged;
             // 
             // txbPlayerName2
             // 
+            txbPlayerName2.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             txbPlayerName2.Location = new Point(223, 129);
             txbPlayerName2.Name = "txbPlayerName2";
-            txbPlayerName2.Size = new Size(150, 23);
+            txbPlayerName2.Size = new Size(150, 29);
             txbPlayerName2.TabIndex = 4;
             txbPlayerName2.TextChanged += txbPlayerName2_TextChanged;
             // 
