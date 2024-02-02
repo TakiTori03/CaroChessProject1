@@ -564,7 +564,7 @@ namespace CaroChessProject1
                 {
                     return true;
                 }
-                if (Matrix[point.Y - countTop][point.X].BackgroundImage == null || Matrix[point.Y + countBottom + 1][point.X] == null)
+                if (Matrix[point.Y - countTop][point.X].BackgroundImage == null || Matrix[point.Y + countBottom + 1][point.X].BackgroundImage == null)
                 {
                     return true;
                 }
@@ -607,7 +607,7 @@ namespace CaroChessProject1
                 {
                     return true;
                 }
-                if (Matrix[point.Y - countTop][point.X - countTop].BackgroundImage == null || Matrix[point.Y + countBottom + 1][point.X + countBottom + 1] == null)
+                if (Matrix[point.Y - countTop][point.X - countTop].BackgroundImage == null || Matrix[point.Y + countBottom + 1][point.X + countBottom + 1].BackgroundImage == null)
                 {
                     return true;
                 }
@@ -651,7 +651,7 @@ namespace CaroChessProject1
                 {
                     return true;
                 }
-                if (Matrix[point.Y - countTop][point.X + countTop].BackgroundImage == null || Matrix[point.Y + countBottom + 1][point.X - countBottom - 1] == null)
+                if (Matrix[point.Y - countTop][point.X + countTop].BackgroundImage == null || Matrix[point.Y + countBottom + 1][point.X - countBottom - 1].BackgroundImage == null)
                 {
                     return true;
                 }
@@ -717,6 +717,7 @@ namespace CaroChessProject1
             Redo();
         }
 
+      
         public void StartComputer(Button btn)
         {
             Point point = PointCOM();
