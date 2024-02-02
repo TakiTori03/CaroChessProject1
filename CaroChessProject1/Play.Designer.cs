@@ -49,7 +49,7 @@
             tiếngViệtToolStripMenuItem = new ToolStripMenuItem();
             helpToolStripMenuItem = new ToolStripMenuItem();
             aboutToolStripMenuItem = new ToolStripMenuItem();
-            gpbLaws = new GroupBox();
+            gpbRules = new GroupBox();
             lblLaws = new Label();
             lblPlayerNameAndMark = new Label();
             txbPlayerName = new TextBox();
@@ -68,7 +68,7 @@
             btnNewGame = new Button();
             lblScore = new Label();
             menuStrip1.SuspendLayout();
-            gpbLaws.SuspendLayout();
+            gpbRules.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pctbMark).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             SuspendLayout();
@@ -221,16 +221,16 @@
             aboutToolStripMenuItem.Text = "About";
             aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
             // 
-            // gpbLaws
+            // gpbRules
             // 
-            gpbLaws.BackColor = SystemColors.Window;
-            gpbLaws.Controls.Add(lblLaws);
-            gpbLaws.Location = new Point(7, 165);
-            gpbLaws.Name = "gpbLaws";
-            gpbLaws.Size = new Size(203, 158);
-            gpbLaws.TabIndex = 2;
-            gpbLaws.TabStop = false;
-            gpbLaws.Text = "Laws";
+            gpbRules.BackColor = SystemColors.Window;
+            gpbRules.Controls.Add(lblLaws);
+            gpbRules.Location = new Point(7, 165);
+            gpbRules.Name = "gpbRules";
+            gpbRules.Size = new Size(203, 158);
+            gpbRules.TabIndex = 2;
+            gpbRules.TabStop = false;
+            gpbRules.Text = "Rules";
             // 
             // lblLaws
             // 
@@ -358,13 +358,12 @@
             // 
             // pnlChessBoard
             // 
-            pnlChessBoard.BackColor = SystemColors.Window;
+            pnlChessBoard.BackColor = SystemColors.Info;
             pnlChessBoard.BackgroundImageLayout = ImageLayout.Stretch;
-            pnlChessBoard.BorderStyle = BorderStyle.FixedSingle;
             pnlChessBoard.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             pnlChessBoard.Location = new Point(225, 25);
             pnlChessBoard.Name = "pnlChessBoard";
-            pnlChessBoard.Size = new Size(865, 679);
+            pnlChessBoard.Size = new Size(865, 678);
             pnlChessBoard.TabIndex = 14;
             // 
             // tmCoolDown
@@ -410,7 +409,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.Window;
+            BackColor = SystemColors.InactiveBorder;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(1111, 720);
             Controls.Add(lblScore);
@@ -428,7 +427,7 @@
             Controls.Add(btnStart);
             Controls.Add(txbPlayerName);
             Controls.Add(lblPlayerNameAndMark);
-            Controls.Add(gpbLaws);
+            Controls.Add(gpbRules);
             Controls.Add(menuStrip1);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -440,8 +439,8 @@
             Load += frmPlay_Load;
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
-            gpbLaws.ResumeLayout(false);
-            gpbLaws.PerformLayout();
+            gpbRules.ResumeLayout(false);
+            gpbRules.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pctbMark).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ResumeLayout(false);
@@ -456,7 +455,7 @@
         private ToolStripMenuItem editToolStripMenuItem;
         private ToolStripMenuItem undoToolStripMenuItem;
         private ToolStripMenuItem redoToolStripMenuItem;
-        private GroupBox gpbLaws;
+        private GroupBox gpbRules;
         private Label lblPlayerNameAndMark;
         private TextBox txbPlayerName;
         private Button btnStart;

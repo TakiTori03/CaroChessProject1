@@ -1540,7 +1540,7 @@ namespace CaroChessProject1
             English = true;
             VietNam = false;
             lblLaws.Text = "- Both sides take turns playing each\non the board. \n- Which ever side reaches >= 5 on 1 \nhorizontally, vertically or diagonally \nwithout blocking both ends first \nwins.\n- If all the boxes on the board are \n played and there is still no winner,\n it will be considered a draw.";
-            gpbLaws.Text = "Rules";
+            gpbRules.Text = "Rules";
         }
 
         private void tiếngViệtToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1548,7 +1548,7 @@ namespace CaroChessProject1
             English = false;
             VietNam = true;
             lblLaws.Text = "- Hai bên lần lượt đánh vào từng\nô trên bàn cờ.\n- Bên nào đạt được >= 5 con trên \n1 hàng ngang, dọc hoặc chéo mà \nkhông bị chặn cả 2 đầu trước sẽ \nthắng.\n- Nếu đánh hết tất cả các ô trên \nbàn cờ mà vẫn chưa có người chiến \nthắng thì xem như hòa.";
-            gpbLaws.Text = "Luật Chơi";
+            gpbRules.Text = "Luật Chơi";
         }
 
         private void SaveGame()

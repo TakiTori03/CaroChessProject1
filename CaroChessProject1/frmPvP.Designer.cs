@@ -153,9 +153,9 @@
             // 
             pictureBox3.BorderStyle = BorderStyle.Fixed3D;
             pictureBox3.Image = Properties.Resources.human;
-            pictureBox3.Location = new Point(54, 168);
+            pictureBox3.Location = new Point(69, 168);
             pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(94, 61);
+            pictureBox3.Size = new Size(81, 61);
             pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox3.TabIndex = 10;
             pictureBox3.TabStop = false;
@@ -164,9 +164,9 @@
             // 
             pictureBox4.BorderStyle = BorderStyle.Fixed3D;
             pictureBox4.Image = Properties.Resources.human1;
-            pictureBox4.Location = new Point(428, 168);
+            pictureBox4.Location = new Point(438, 168);
             pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(94, 61);
+            pictureBox4.Size = new Size(84, 61);
             pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox4.TabIndex = 11;
             pictureBox4.TabStop = false;
