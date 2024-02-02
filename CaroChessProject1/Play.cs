@@ -143,7 +143,11 @@ namespace CaroChessProject1
         private void Sound()
         {
             SoundPlayer bloop = new System.Media.SoundPlayer(Application.StartupPath + "\\Sound\\bloop.wav");
-            bloop.Play();
+            bloop.PlaySync();
+            
+            //bloop.Play();
+
+
         }
 
 
